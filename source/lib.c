@@ -54,14 +54,23 @@ int criarTabela(){
 
 	for (int j = 1; j < qtd_colunas + 1; j++){
 		
-		printf("Digite o nome da coluna %d : ", j);		
-		scanf("%s", nomeCOL); //Esse seria o array das variaveis
-		printf("1 - Int / 2 - Double / 3 - Float / 4 - String\n");
-		printf("Digite o tipo de variavel da coluna [%d] :", j);
-		scanf("%s", tipo); //Esse seria o array das variaveis
-		strcat(nomeCOL, " | ");
-		strcat(nomeCOL, tipo);
-		fprintf(estruTabela, "%s\n", nomeCOL);
+		if(j == 1){   
+			printf("Digite o nome de sua chave primaria %d : ", j);
+                        scanf("%s", nomeCOL); //Esse seria o array das variaveis
+                        //printf("1 - Int / 2 - Double / 3 - Float / 4 - String\n");
+                        //printf("Digite o tipo de variavel da coluna [%d] :", j);
+                        //scanf("%s", tipo); //Esse seria o array das variaveis	
+			strcpy(tipo, "1");
+		}else{
+			printf("Digite o nome da coluna %d : ", j);		
+			scanf("%s", nomeCOL); //Esse seria o array das variaveis
+			printf("1 - Int / 2 - Double / 3 - Float / 4 - String\n");
+			printf("Digite o tipo de variavel da coluna [%d] :", j);
+			scanf("%s", tipo); //Esse seria o array das variaveis
+		}
+		strcat(tipo, " | ");
+		strcat(tipo, nomeCOL);
+		fprintf(estruTabela, "%s\n", tipo);
 	
 	i++;
 	}

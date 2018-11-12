@@ -34,8 +34,8 @@ int criarTabela(){
 	strcpy(nomeEstruT, nomeTabela);
 	strcpy(nomeDadosT, nomeTabela);
 		
-	strcat(nomeEstruT, "ESTRU.txt");
-	strcat(nomeDadosT, "DADOS.txt");
+	strcat(nomeEstruT, "ESTRU");
+	strcat(nomeDadosT, "DADOS");
 	estruTabela = fopen(nomeEstruT, "a+");
 	dadosTabela = fopen(nomeDadosT, "w");
 	
@@ -54,15 +54,13 @@ int criarTabela(){
 
 	for (int j = 1; j < qtd_colunas + 1; j++){
 		
-		//tabela[i][j] = (char*) malloc(50 * sizeof(char));
 		printf("Digite o nome da coluna %d : ", j);		
 		scanf("%s", nomeCOL); //Esse seria o array das variaveis
-      		//writeFile(tableName, table[i][j], "a+");
+		printf("1 - Int / 2 - Double / 3 - Float / 4 - String\n");
 		printf("Digite o tipo de variavel da coluna [%d] :", j);
 		scanf("%s", tipo); //Esse seria o array das variaveis
 		strcat(nomeCOL, " | ");
 		strcat(nomeCOL, tipo);
-                //writeFile(nomeEstruT, nomeCOL, "a+");
 		fprintf(estruTabela, "%s\n", nomeCOL);
 	
 	i++;

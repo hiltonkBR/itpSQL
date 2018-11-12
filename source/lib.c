@@ -86,7 +86,7 @@ system("clear");
 	}
     	printf("---------------- itpSQL ----------------\n");
     	printf("--------- ITP/PTP 2018.2 N12 -----------\n");
-    	printf("     Feito por Hilton & Hasler\n");
+    	printf("     Feito por Hilton & Hasller\n");
     	printf("\n");
 tes = 0 ;
     int option;

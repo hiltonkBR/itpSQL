@@ -5,6 +5,7 @@
 int tes;
 
 int criarTabela(){
+	system("clear");
         int qtd_colunas, n, qtd_lines; 
         char ***tabela, nomeTabela[100], nomeEstruT[100], nomeDadosT[100];
         FILE *estruTabela, *dadosTabela, *todasTabelas;
@@ -58,8 +59,26 @@ int criarTabela(){
 	tes= 10;	
 }
 
+void listarTabelas(){
+  	
+	FILE *arq;
+  	char table[200];
+	system("clear");
+	
+  	arq = fopen("todasTabelas.txt", "r");
+  	printf("\nTabelas:\n");
+
+  	while (fscanf(arq, " %s", table) != EOF) {
+  		printf("%s\n", table);
+  	}
+	printf("\nPressione enter para retornar ao MENU");
+	getchar(); // This will store the enter key
+    	getchar();  
+}
+
 
 void menu(){
+system("clear");
 	if(tes ==10){
  		printf("----------------------------------------\n");
  		printf("----- Tabela inserida com sucesso ------\n");
@@ -86,8 +105,10 @@ tes = 0 ;
 	break;
 
         case 2 :
-          //insertItensAfterFile();
+          listarTabelas();
           printf ("\n");
+	  system("clear");
+          menu();
         break;
 
         case 3 :

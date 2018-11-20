@@ -4,17 +4,48 @@
 
 int tes;
 
+int checaNome(char nomeCheca[200]){
+        char str[100];
+        FILE *fp;
+        fp = fopen("todasTabelas.txt","a+");
+        //nomeCheca[strlen(nomeCheca)-1]=nomeCheca[strlen(nomeCheca)];
+        while (fscanf(fp, "%s",str)!=EOF){
+                if (strcmp(str,nomeCheca)==0){
+                        //printf("String existe!\n");
+                        fclose(fp);
+                        return 1;
+                }else{
+                        fclose(fp);
+                        return 0;
+                }
+
+        }
+}
+
+
 int criarTabela(){
 	system("clear");
-        int qtd_colunas, n, qtd_lines; 
-        char ***tabela, nomeTabela[100], nomeEstruT[100], nomeDadosT[100];
+        int qtd_colunas, n;
+	int conta = 0; 
+        char ***tabela, nomeTabela[200], nomeEstruT[200], nomeDadosT[200];
         FILE *estruTabela, *dadosTabela, *todasTabelas;
 
         tabela = (char***) malloc(50 * sizeof(char **));
-
-        printf("Digite o nome da tabela:\n");
-        scanf("%s", nomeTabela);
 	
+	while (conta < 1){
+        	printf("Digite o nome da tabela:\n");
+        	scanf("%s", nomeTabela);
+		
+		if(checaNome(nomeTabela) == 1){
+			printf("--------------------------------------------------\n");
+                	printf("-- Tabela já existe tente com um nome diferente --\n");
+			printf("--------------------------------------------------\n");
+        	}else{
+			conta++;
+		}
+		
+	}
+
         todasTabelas = fopen("todasTabelas.txt", "a+");
         fprintf(todasTabelas, "%s\n", nomeTabela);
         fclose(todasTabelas);
@@ -41,7 +72,7 @@ int criarTabela(){
 	for (int j = 1; j < qtd_colunas + 1; j++){
 		
 		if(j == 1){   
-			printf("Digite o nome de sua chave primaria %d : ", j);
+			printf("Digite o nome de sua chave primaria: ");
                         scanf("%s", nomeCOL); 
 			strcpy(tipo, "1");
 		}else{
@@ -84,6 +115,7 @@ system("clear");
  		printf("----- Tabela inserida com sucesso ------\n");
  		printf("----------------------------------------\n\n");
 	}
+
     	printf("---------------- itpSQL ----------------\n");
     	printf("--------- ITP/PTP 2018.2 N12 -----------\n");
     	printf("     Feito por Hilton & Hasller\n");

@@ -82,7 +82,7 @@ int criarTabela(){
 			printf("Digite o tipo de variavel da coluna [%d] :", j);
 			scanf("%s", tipo); 
 		}
-		strcat(tipo, " | ");
+		strcat(tipo, "|");
 		strcat(tipo, nomeCOL);
 		fprintf(estruTabela, "%s\n", tipo);
 	}
@@ -106,6 +106,48 @@ void listarTabelas(){
 	getchar(); // This will store the enter key
     	getchar();  
 }
+
+
+
+void inseriRegistro(){
+	
+	FILE *todasTabelas;
+	FILE *estruTabela;
+	FILE *dadosTabela;
+	char nomeTabela[200], nomeEstruT[200], nomeDadosT[200];
+	int conta =0;
+
+	while (conta < 1){
+                printf("Digite o nome da tabela onde será inserido o registro:\n");
+                scanf("%s", nomeTabela);
+
+                if(checaNome(nomeTabela) == 0){
+                        printf("------------------------------------------------------------\n");
+                        printf("-- A tabela '%s' não existe --\n", nomeTabela);
+                        printf("------------------------------------------------------------\n");
+                }else{
+                        conta++;
+                }
+
+        }
+	
+	strcpy(nomeEstruT, nomeTabela);
+	strcpy(nomeDadosT, nomeTabela);
+	strcat(nomeEstruT, "ESTRU");
+        strcat(nomeDadosT, "DADOS");
+	
+	estruTabela = fopen(nomeEstruT, "r");
+        dadosTabela = fopen(nomeDadosT, "a+");
+
+	
+	fclose(dadosTabela);
+	fclose(estruTabela);
+	
+	getchar();
+	getchar();	
+	
+}
+
 
 
 void menu(){
@@ -144,8 +186,10 @@ tes = 0 ;
         break;
 
         case 3 :
-          //showAllTables();
+          inseriRegistro();
           printf ("\n");
+	  system("clear");
+ 	  menu();
         break;
 
         case 4 :

@@ -3,6 +3,7 @@
 
 int checaNome(char nomeCheca[20]);
 int criarTabela();
+void inseriRegistro();
 void menu();
 
 #endif

@@ -11,7 +11,9 @@ struct Tipo{
 struct Chave{
 	char id[200];
 };
-
+struct Dados{
+	char data[200];
+};
 
 int checaNome(char nomeCheca[200]){
         char str[200];
@@ -30,9 +32,6 @@ int checaNome(char nomeCheca[200]){
 
         }
 }
-
-
-
 
 int checaChave(char chaveID[200], char nomeTabela[200]){
         char str[200], aux[200];
@@ -286,6 +285,99 @@ void inseriRegistro(){
 	
 }
 
+void mostrarDados(){
+	FILE *estruTabela;
+        FILE *dadosTabela;
+        char nomeTabela[300], nomeEstruT[200], nomeDadosT[200], aux[200], aux2[200];
+        int conta =0, contador=0, contador2=0, i, ii, t;
+        char * linha;
+        char * linha2;
+	const char s ='|';
+	system("clear");
+
+	while (conta < 1){
+                printf("Digite o nome da tabela que deseja exibir os registro:\n");
+                scanf("%s", nomeTabela);
+
+                if(checaNome(nomeTabela) == 0){
+                        printf("------------------------------------------------------------\n");
+                        printf("-- A tabela '%s' não existe --\n", nomeTabela);
+                        printf("------------------------------------------------------------\n");
+                }else{
+                        conta++;
+                }
+
+        }
+
+        strcpy(nomeEstruT, nomeTabela);
+        strcpy(nomeDadosT, nomeTabela);
+        strcat(nomeEstruT, "ESTRU");
+        strcat(nomeDadosT, "DADOS");
+
+        estruTabela = fopen(nomeEstruT, "r");
+        dadosTabela = fopen(nomeDadosT, "r");
+
+
+	while (fscanf(estruTabela, "%s", aux) != EOF) {
+		contador++;
+	}
+	fseek(estruTabela, 0, SEEK_SET );
+	struct Tipo tipo[contador];
+	
+	for(i=0;i<contador;i++){
+		strcpy( tipo[i].tipoColuna, " " );
+		linha = malloc( sizeof(char) * 100 * contador );
+		fscanf( estruTabela, "%s\n", linha);
+		char * linha_tokenizada = strtok( linha, "|" );
+		strcpy( tipo[i].nomeColuna, linha_tokenizada );
+		linha_tokenizada = strtok( NULL, "|" );
+		strcpy( tipo[i].tipoColuna, linha_tokenizada );
+		//printf("%s ",tipo[i].tipoColuna);
+		if (i == contador-1){
+			printf("%s\n",tipo[i].nomeColuna);
+               	}else{
+			printf("%s\t || ",tipo[i].nomeColuna);
+                }
+                free(linha);
+	}
+
+	while(fscanf(dadosTabela, "%s", aux2) != EOF){
+		contador2++;
+	}
+	fseek(dadosTabela, 0, SEEK_SET );
+	struct Dados dados[contador2];
+	
+	for(i=0;i<contador2;i++){
+		
+		strcpy( dados[i].data, " ");
+		linha2 = malloc( sizeof(char) * 400 * contador2 );
+		fscanf( dadosTabela, "%s\n", linha2);
+		//printf("%s \n", linha2);
+		char * linha_token2 = strtok( linha2, "|" );
+		for(t=0;t<contador;t++){
+			strcpy( dados[i].data, linha_token2);
+			if (t == contador-1){
+				printf("%s\t", dados[i].data);
+			}else{
+				printf("%s\t || ", dados[i].data);
+			}
+			linha_token2 = strtok( NULL, "|" );	
+		}
+		t=0;
+		printf("\n");
+		//strcpy( dados[i].data, linha_token2);
+		//linha_token2 = strtok( NULL, "|" );
+		//strcpy( dados[i].data, linha_token2);
+		//printf("%s ", dados[i].data);
+		free(linha2);	
+		
+	}
+	printf("\n\nPressione uma tecla para retornar ao menu\n");
+	getchar();
+	getchar();
+	
+
+}
 
 
 void menu(){
@@ -336,8 +428,10 @@ tes = 0 ;
         break;
 
         case 4 :
-          //showTables();
+          mostrarDados();
           printf ("\n");
+	  system("clear");
+	  menu();
         break;
 
         case 5 :

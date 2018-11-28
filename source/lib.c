@@ -262,7 +262,7 @@ void inseriRegistro(){
             		}
             		if (strcmp(tipo[i].tipoColuna, "4")==0){
                 		printf("Digite o valor da coluna '%s' do tipo STRING!\n", tipo[i].nomeColuna);
-                		scanf("%s", linha);
+                		scanf(" %[^\n]%*c", linha);
 				if (i == contador-1){
                                         fprintf(dadosTabela, "%s", linha);
                                 }else{
@@ -341,7 +341,7 @@ void mostrarDados(){
                 free(linha);
 	}
 
-	while(fscanf(dadosTabela, "%s", aux2) != EOF){
+	while(fscanf(dadosTabela, "%[^\n]%*c", aux2) != EOF){
 		contador2++;
 	}
 	fseek(dadosTabela, 0, SEEK_SET );
@@ -351,7 +351,7 @@ void mostrarDados(){
 		
 		strcpy( dados[i].data, " ");
 		linha2 = malloc( sizeof(char) * 400 * contador2 );
-		fscanf( dadosTabela, "%s\n", linha2);
+		fscanf( dadosTabela, "%[^\n]%*c\n", linha2);
 		//printf("%s \n", linha2);
 		char * linha_token2 = strtok( linha2, "|" );
 		for(t=0;t<contador;t++){
@@ -380,6 +380,71 @@ void mostrarDados(){
 }
 
 
+
+void deletarTabela(){
+	char nomeTabela[30], nomeExclu[100], auxTabela[200], tabela[200];
+	char text[200], letra = '\n';
+	int i, operadorLogico,status, linha=0,contadorLinhas=0, conta=0;
+	FILE *nomeTabelas = fopen("todasTabelas.txt", "r");
+    	if(nomeTabelas != NULL){
+		fread (&text, sizeof(char), 200, nomeTabelas);
+		for (int i = 0; i < strlen(text); i++){
+			if(text[i] == letra){
+				contadorLinhas++;
+	 		}
+        	}
+                fseek(nomeTabelas, 0, SEEK_SET);
+		while (conta < 1){
+                	printf("Digite o nome da tabela que deseja excluir:\n");
+                	scanf("%s", nomeTabela);
+                	if(checaNome(nomeTabela) == 0){
+                        	printf("--------------------------------------------------\n");
+                        	printf("-- Tabela não existe tente com um nome diferente --\n");
+                        	printf("--------------------------------------------------\n");
+                	}else{
+                        	conta++;
+                	}
+
+        	}
+		strcpy(nomeExclu,"rm -rf ");
+		strcat(nomeExclu,nomeTabela);
+		strcat(nomeExclu,"*");
+		system(nomeExclu);
+		fclose(nomeTabelas);
+                FILE *output = fopen("todasTabelas.txt", "r");
+                FILE *input = fopen("copia.txt", "w+");
+                if(output!=NULL && input!=NULL){
+	                for(i=0;i<contadorLinhas;i++){
+				fscanf(output,"%s\n", auxTabela);
+				if(strcmp(auxTabela,nomeTabela)==0){
+                                        //printf("%s foi pego\n",auxTabela);
+				}else{
+					fprintf(input,"%s\n",auxTabela);
+                                        //printf("%s não foi pego\n",auxTabela);
+					
+				}
+   			}
+			fclose(output);
+                        fclose(input);
+                        FILE *output = fopen("copia.txt", "r");
+                        FILE *input = fopen("todasTabelas.txt", "w");
+                        while (fscanf(output, "%s", tabela) != EOF){
+	                        fprintf(input,"%s\n",tabela);
+        		}
+                        fclose(output);
+                        fclose(input);
+			system("rm -rf copia.txt");
+			tes =12;
+		}else{
+                	printf("errp\n");
+
+             	}
+	}else{
+        	printf("Ocorreu um erro ao abrir o arquivo!\n");
+        }
+}
+
+
 void menu(){
 system("clear");
 	if(tes ==10){
@@ -392,25 +457,30 @@ system("clear");
                 printf("----- Registro inserido com sucesso ------\n");
                 printf("-----------------------------------------\n\n");
         }
+	if(tes ==12){
+                printf("-----------------------------------------\n");
+                printf("----- Tabela apagado com sucesso ------\n");
+                printf("-----------------------------------------\n\n");
+        }
+
 
     	printf("---------------- itpSQL ----------------\n");
     	printf("--------- ITP/PTP 2018.2 N12 -----------\n");
     	printf("     Feito por Hilton & Hasller\n");
     	printf("\n");
-tes = 0 ;
-    int option;
-    printf("selecione uma opção:\n1. Criar uma Tabela\n2. Listar tabelas\n3. Inserir registros em uma tabela\n4. Mostrar dados de uma tabela\n5. Pesquisar em uma tabela\n6. Apagar valor de uma Tabela\n7. Apagar uma Tabela\n" );
+	tes = 0 ;
+    	int option;
+    	printf("selecione uma opção:\n1. Criar uma Tabela\n2. Listar tabelas\n3. Inserir registros em uma tabela\n4. Mostrar dados de uma tabela\n5. Pesquisar em uma tabela\n6. Apagar valor de uma Tabela\n7. Apagar uma Tabela\n" );
 
-    while (option <  9) {
-      scanf("%d", &option);
-
+    	while (option <  9) {
+      		scanf("%d", &option);
       switch (option)
       {
         case 1:
-        criarTabela();
-        printf ("\n");
-        system("clear");
-        menu();
+          criarTabela();
+          printf ("\n");
+          system("clear");
+          menu();
 	break;
 
         case 2 :
@@ -445,8 +515,10 @@ tes = 0 ;
         break;
 
         case 7:
-          //deleteTable();
+          deletarTabela();
           printf ("\n");
+	  system("clear");
+	  menu();
         break;
 
         default:
